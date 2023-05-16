@@ -10,7 +10,7 @@ void main() {
 
 class ChickenGame extends FlameGame {
   double chickenScaleFactor = 3.0;
-  late SpriteComponent chickenSprite;
+
   late SpriteAnimationComponent chicken;
 
   @override
@@ -20,15 +20,6 @@ class ChickenGame extends FlameGame {
     print('2. load the assets for the game');
 
     Image chickenImage = await images.load('chicken.png');
-
-    // the following is for a single Sprite
-    // chickenSprite = SpriteComponent.fromImage(
-    //   chickenImage,
-    //   srcSize: Vector2(32, 34),
-    //   srcPosition: Vector2(32, 0),
-    // )
-    //   ..size = Vector2(32, 34) * chickenScaleFactor
-    //   ..position = Vector2.all(100);
 
     var chickenAnimation = SpriteAnimation.fromFrameData(
       chickenImage,
@@ -42,10 +33,9 @@ class ChickenGame extends FlameGame {
     chicken = SpriteAnimationComponent()
       ..animation = chickenAnimation
       ..size = Vector2(32, 34) * chickenScaleFactor
-      ..position = Vector2.all(100);
+      ..position = Vector2(200, 100);
 
     // add sprite to UI
-    //add(chickenSprite);
     add(chicken);
   }
 
@@ -54,7 +44,7 @@ class ChickenGame extends FlameGame {
     super.update(dt);
 
     // the following is just a demonstration
-    // chickenSprite.y += 1;
-    // chickenSprite.x += 1;
+    // chicken.y += 1;
+    // chicken.x -= 1;
   }
 }
