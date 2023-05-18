@@ -3,6 +3,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/image_composition.dart';
 import 'package:flame/palette.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart' hide Image;
 
 void main() {
@@ -26,10 +27,12 @@ class ChickenGame extends FlameGame {
 
     print('2. load the assets for the game');
 
-    background = SpriteComponent()
-      ..sprite = await loadSprite('background.png')
-      ..size = size;
-    add(background);
+    var homeMap = await TiledComponent.load('level_1.tmx', Vector2(16, 16));
+    add(homeMap);
+    // background = SpriteComponent()
+    //   ..sprite = await loadSprite('background.png')
+    //   ..size = size;
+    // add(background);
 
     Image chickenImage = await images.load('chicken.png');
 
