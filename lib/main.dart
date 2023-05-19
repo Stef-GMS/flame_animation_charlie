@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/image_composition.dart';
@@ -21,6 +22,8 @@ class ChickenGame extends FlameGame {
   late SpriteComponent background;
   late final JoystickComponent joystick;
   bool chickenFlipped = false;
+  final world = World();
+  late final CameraComponent cameraComponent;
 
   @override
   Future<void> onLoad() async {
@@ -31,17 +34,20 @@ class ChickenGame extends FlameGame {
     print('3. load map');
     var homeMap = await TiledComponent.load('level_1.tmx', Vector2(16, 16));
     print('4. add map to game');
-    add(homeMap);
+    //add(homeMap);
     double mapHeight = 16.0 * homeMap.tileMap.map.height;
-    //double mapWidth = 16.0 * homeMap.tileMap.map.width;
+    double mapWidth = 16.0 * homeMap.tileMap.map.width;
 
-    //**** this makes joystick stop working ****
-    camera.viewport = FixedResolutionViewport(
-      Vector2(
-        1280, //mapWidth,
-        mapHeight,
-      ),
+    cameraComponent = CameraComponent.withFixedResolution(
+      world: world,
+      width: mapWidth,
+      height: mapHeight,
     );
+    addAll([world, cameraComponent]);
+
+    cameraComponent.viewfinder.anchor = Anchor.topLeft;
+
+    world.add(homeMap); // This replaces adding directly to the game
 
     print('5. load charlie the chicken');
     Image chickenImage = await images.load('chicken.png');
@@ -61,7 +67,8 @@ class ChickenGame extends FlameGame {
       ..position = Vector2(200, 100);
 
     // add sprite to UI
-    add(chicken);
+    //add(chicken);
+    world.add(chicken);
 
     final joystickKnobPaint = BasicPalette.blue.withAlpha(200).paint();
     final joystickBackgroundPaint = BasicPalette.blue.withAlpha(100).paint();
